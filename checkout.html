@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Checkout - Mercadinho Digital</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h2>Finalizar Pedido</h2>
+
+  <div id="resumoPedido"></div>
+
+  <h3>Informações de Entrega:</h3>
+  <input type="text" id="endereco" placeholder="Endereço completo"><br>
+  <input type="text" id="cidade" placeholder="Cidade"><br>
+  <input type="text" id="cep" placeholder="CEP"><br>
+
+  <h3>Escolha o método de pagamento:</h3>
+  <select id="pagamento">
+    <option value="Cartão de Crédito">Cartão de Crédito</option>
+    <option value="Pix">Pix</option>
+    <option value="Boleto">Boleto</option>
+  </select><br><br>
+
+  <button onclick="confirmarPedido()">Confirmar Pedido</button>
+
+  <script>
+    let carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
+
+    function mostrarResumo() {
+      const resumo = document.getElementById('resumoPedido');
+      let total = 0;
+      carrinho.forEach(item => {
+        total += item.preco;
+        const div = document.createElement('div');
+        div.innerText = `${item.titulo} - R$ ${item.preco.toFixed(2)}`;
+        resumo.appendChild(div);
+      });
+      const totalDiv = document.createElement('div');
+      totalDiv.innerHTML = `<strong>Total: R$ ${total.toFixed(2)}</strong>`;
+      resumo.appendChild(totalDiv);
+    }
+
+    function confirmarPedido() {
+      const endereco = document.getElementById('endereco').value;
+      const cidade = document.getElementById('cidade').value;
+      const cep = document.getElementById('cep').value;
+      const pagamento = document.getElementById('pagamento').value;
+
+      if (!endereco || !cidade || !cep) {
+        alert('Por favor, preencha todos os campos de entrega.');
+        return;
+      }
+
+      alert(`Pedido confirmado!\n\nEndereço: ${endereco}, ${cidade}, ${cep}\nPagamento: ${pagamento}\n\nObrigado por comprar conosco!`);
+
+      localStorage.removeItem('carrinho');
+      window.location.href = 'catalogo.html';
+    }
+
+    mostrarResumo();
+  </script>
+</body>
+</html>
